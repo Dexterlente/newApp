@@ -11,21 +11,29 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  username String   @unique
-  password String
-  profile  Profile?
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  username  String    @unique
+  password  String
+  followers Follows[] @relation("following")
+  following Follows[] @relation("follower")
 }
 
 model Profile {
   id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
   userId     Int      @unique
   firstName  String   @db.VarChar(30)
   lastName   String   @db.VarChar(30)
-  // followers  User[]   @relation("Following", references: [id])
   image      String?  @db.VarChar(1000)
   createdAt  DateTime @default(now())
   isVerified Boolean  @default(false)
+}
+
+model Follows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
+
+  @@id([followerId, followingId])
 }
