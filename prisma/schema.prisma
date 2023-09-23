@@ -19,31 +19,26 @@ model User {
   // following Follows[] @relation("follower")
 }
 
-model Profile {
-  id         Int       @id @default(autoincrement())
-  userId     Int       @unique
-  firstName  String    @db.VarChar(30)
-  lastName   String    @db.VarChar(30)
-  image      String?   @db.VarChar(1000)
-  createdAt  DateTime  @default(now())
-  isVerified Boolean   @default(false)
-  followers  Profile[] @relation("following", references: [id])
-  following  Profile[] @relation("follower", references: [id])
-  Profile    Profile?  @relation(fields: [profileId], references: [id])
-  profileId  Int?
-  Profile    Profile?  @relation(fields: [profileId], references: [id])
-  profileId  Int?
-  Follows    Follows[]
-  Follows    Follows[]
-}
+// model Profile {
+//   id         Int       @id @default(autoincrement())
+//   userId     Int       @unique
+//   firstName  String    @db.VarChar(30)
+//   lastName   String    @db.VarChar(30)
+//   image      String?   @db.VarChar(1000)
+//   createdAt  DateTime  @default(now())
+//   isVerified Boolean   @default(false)
+//   followers  Profile[] @relation("following", references: [id])
+//   following  Profile[] @relation("follower", references: [id])
+//   profile    Profile? @relation(fields: [profileId], references: [id])
+//   profileId  Int?
+//   Follows    Follows[]
+// }
 
-model Follows {
-  follower    Profile @relation("follower", fields: [profileId], references: [id])
-  followerId  Int
-  following   Profile @relation("following", fields: [profileId], references: [id])
-  followingId Int
-  profileId   Int
-  profileId   Int
+// model Follows {
+//   follower    Profile @relation("follower", fields: [followerId], references: [id])
+//   followerId  Int
+//   following   Profile @relation("following", fields: [followingId], references: [id])
+//   followingId Int
 
-  @@id([followerId, followingId])
-}
+//   @@id([followerId, followingId])
+// }
