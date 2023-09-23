@@ -11,29 +11,39 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  username  String    @unique
-  password  String
-  followers Follows[] @relation("following")
-  following Follows[] @relation("follower")
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  username String @unique
+  password String
+  // followers Follows[] @relation("following")
+  // following Follows[] @relation("follower")
 }
 
 model Profile {
-  id         Int      @id @default(autoincrement())
-  userId     Int      @unique
-  firstName  String   @db.VarChar(30)
-  lastName   String   @db.VarChar(30)
-  image      String?  @db.VarChar(1000)
-  createdAt  DateTime @default(now())
-  isVerified Boolean  @default(false)
+  id         Int       @id @default(autoincrement())
+  userId     Int       @unique
+  firstName  String    @db.VarChar(30)
+  lastName   String    @db.VarChar(30)
+  image      String?   @db.VarChar(1000)
+  createdAt  DateTime  @default(now())
+  isVerified Boolean   @default(false)
+  followers  Profile[] @relation("following", references: [id])
+  following  Profile[] @relation("follower", references: [id])
+  Profile    Profile?  @relation(fields: [profileId], references: [id])
+  profileId  Int?
+  Profile    Profile?  @relation(fields: [profileId], references: [id])
+  profileId  Int?
+  Follows    Follows[]
+  Follows    Follows[]
 }
 
 model Follows {
-  follower    User @relation("follower", fields: [followerId], references: [id])
+  follower    Profile @relation("follower", fields: [profileId], references: [id])
   followerId  Int
-  following   User @relation("following", fields: [followingId], references: [id])
+  following   Profile @relation("following", fields: [profileId], references: [id])
   followingId Int
+  profileId   Int
+  profileId   Int
 
   @@id([followerId, followingId])
 }
